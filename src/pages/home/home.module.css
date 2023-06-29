@@ -1,0 +1,148 @@
+
+.container {
+  margin: 0 14px;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  gap: 14px;
+}
+
+.form input {
+  width: 100%;
+  height: 44px;
+  border-radius: 8px;
+  padding: 0 8px;
+  outline: none;
+}
+
+.form button {
+  background-color: transparent;
+  border: 0;
+}
+
+table {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;/* Isso significa que as larguras das colunas serão determinadas pelos valores definidos nas regras CSS ou pelos elementos filhos da primeira linha da tabela.*/
+  
+  border-collapse: separate; /*"border-collapse". Essa propriedade é usada para controlar o comportamento da borda entre as células de uma tabela quando elas estão lado a lado.
+                                "collapse": Nesse valor, as bordas das células se juntam para formar uma única borda contínua.                                                */
+  
+  
+  border-spacing: 0 14px;
+}
+
+.tr {
+  background-color: #1d1c20;
+}
+
+td:first-child, /* primeiro filho de td e th receber esse border-radius*/
+th:first-child{ 
+  border-radius: 8px 0 0 8px;  
+}
+
+td:last-child, /* primeiro filho de td e th receber esse border-radius*/
+th:last-child{ 
+  border-radius: 8px 0 0 8px;  
+}
+
+table th {
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #FFF;
+}
+
+.link {
+  font-weight: bold;
+  font-size: 18px;
+  color: #FFF;
+  text-decoration: none;
+  transition: color 0.5s;
+}
+
+.link {
+  color: #FFF;
+  text-decoration: none;
+  transition: color 0.5s;
+}
+
+.link:hover {
+  color: #30beff;
+}
+
+.tdLabel, .tdProfit, .tdLoss { /*tdLoss quando for negativo*/
+  color: #BBB;
+}
+
+.tdProfit{
+  color: #12f98a;
+}
+
+.tdLoss{
+  color: #f91257;
+}
+
+table th,
+table td{
+  padding: 14px;    
+  text-align: center;
+}
+
+
+@media screen and (max-width: 600px){
+  table{
+    border: 0;
+  }
+
+  table thead{
+    border:none;
+    clip: rect(0 0 0 0); /*A propriedade "clip" é definida como "rect(0 0 0 0)", o que faz com que o elemento seja totalmente oculto*/
+    height: 1px;
+    overflow: hidden;  /*manter dentro do espaçamento*/
+    padding: 0;
+    position: absolute;
+    margin: -1;
+    width: 1px;
+  }
+
+  .tr {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 14px;
+
+  }
+
+  table td {
+    border-bottom:1px solid rgba(221, 221, 221, 0.160) ;
+    display: block;
+    font-size: 14px;
+    text-align: right;
+  }
+
+  table td:last-child{
+    border-bottom: 0;  /* tirando a borda de baixo do ULTIMO td*/
+  }
+
+td:first-child, /* primeiro filho de td e th receber esse border-radius*/
+th:first-child{ 
+  border-radius: 0;  
+}
+
+td:last-child, /* ultimo filho de td e th receber esse border-radius*/
+th:last-child{ 
+  border-radius: 0;  
+}
+
+table td::before{  /* acessando antes de conteudo de td*/
+  content: attr(data-label); /* e adicionando data-label(olhar na no jsx que esta adicionado la) ANTES de td */
+  float: left;  /* como ta colado uso o float left para jogao la pra esquerda o data-label*/
+  font-weight: bold;
+  color: #FFF;
+  text-transform: uppercase;
+}
+
+}
