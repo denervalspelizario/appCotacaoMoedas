@@ -52,7 +52,7 @@ export default function Home(){
           currency: "BRL" // Aqui, a propriedade currency é definida como "BRL", que representa a moeda brasileira, o real.
         })
 
-        const formatResult = coinsData.map((item) => { // atravez do map percorre todos os objetos de CoinsData joga em item
+        const formatResult = coinsData.map((item) => { // atravez do map percorre todos os objetos de coinsData joga em item
           const formated = { //formated recebe os dados de coinsData atravez do ...item
             ...item,
             formatedPrice: price.format(Number(item.price)), //  formatando o dado price  
@@ -63,6 +63,7 @@ export default function Home(){
         })
 
         setMoedas(formatResult)  // passando os dados da api ja formatada(formatResult) para state Moedas que vamos usar para renderizar os dados
+        console.log(formatResult)
 
       })
       .catch((error) => { // requisição deu errado então
@@ -102,26 +103,33 @@ export default function Home(){
           </thead>
 
           <tbody id='tbody'>
-            <tr className={styles.tr}>
-              
-              <td className={styles.tdLabel} data-label='Moeda' > 
-                <Link className={styles.link} to='/detail/btc' >
-                  <span>Bitcoin</span> | BTC
-                </Link>
-              </td>
+            {moedas.map( moeda => ( // dados da state moedas repassa para moeda e renderiza atravez do map
+              <tr                      // quandos e faz o map sempre o primeiro item precisa da key para se ter referencia
+                className={styles.tr} 
+                key={moeda.name}
+              >
+                <td className={styles.tdLabel} data-label='Moeda' > 
+                  <Link 
+                    className={styles.link} 
+                    to={`/detail/${moeda.symbol}`}  // toda vez que cliclar na moeda direciona para rota 
+                  >
+                    <span>{moeda.name}</span> | {moeda.symbol}  
+                  </Link>
+                </td>
             
-              <td className={styles.tdLabel} data-label='Mercado'> 
-                R$ 19293
-              </td>
+                <td className={styles.tdLabel} data-label='Mercado'> 
+                  {moeda.formatedMarket}
+                </td>
 
-              <td className={styles.tdLabel} data-label='Preco'> 
-                R$ 40.96233
-              </td>
-
-              <td className={styles.tdProfit} data-label='Volume'> {/* Este td vai variar de cor por isso classe nome diferente e span */} 
-                <span>-5.3</span>
-              </td>
-            </tr>
+                <td className={styles.tdLabel} data-label='Preco'> 
+                  {moeda.formatedPrice}
+                </td>
+                              {/* se numero de delta_24(valorizacao em 24) for maior ou igual a 0 então o styles é o tdProfit se for menor então o style será tdLoss */} 
+                <td className={Number(moeda?.delta_24) >= 0 ? styles.tdProfit : styles.tdLoss} data-label='Volume'> 
+                  <span>{moeda.delta_24}</span>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
     </main>
