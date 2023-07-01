@@ -1,7 +1,7 @@
 import styles from './home.module.css';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { BiSearch } from 'react-icons/bi'  // importando icon de biblioteca react-icons
-import {useEffect, useState} from 'react';
+import {FormEvent, useEffect, useState} from 'react';
 
 
 // instalacao de biblioteca react-icons comando = npm install react-icons
@@ -29,9 +29,10 @@ interface DataProps {  // criando a interface dataprops que tem uma coins que re
 
 
 export default function Home(){
-
   const [moedas, setMoedas] = useState<EstruturaMoedaProps[]>([]) // state que é uma array que vai receber os dados formatados da api(coinsData)
-                                                                // state esta tipada com a interface EstruturaMoedaprops
+                                                                  // state esta tipada com a interface EstruturaMoedaprops
+  const [valorInput, setValorInput] = useState('') // state que recebe valor de input
+  const navigate = useNavigate();
 
 
   // FUNCAO ASSINCRONA QUE FAZ A REQUISIÇÃO DA API 
@@ -78,13 +79,27 @@ export default function Home(){
 
   }, []) // como esta vazia se inicia ao startar a aplicação
 
+  // FUNCAO QUE DIRECIONA USUARIO A ROTA DA MOEDA QUE FOR DIGITADA NO INPUT
+  function handleSearch(event: FormEvent){  // a funcao recebe o parametro event do tipo FormEvent(lembre-se tem que importa-la do react)
+    event.preventDefault(); // evitando atualizar a pagina toda vem que ativa a funcao
+    
+    if(valorInput === ''){ // se state valorInput esta vazia(usuario não digitou nada) então
+      return // não retorma nada
+    
+    } else { // se tiver algo então
+
+      navigate(`/detail/${valorInput}`) // navega para rota de valorInput
+    }
+  }
 
 
   return(
     <main className={styles.container}>
-        <form className={styles.form}>
+        <form  className={styles.form} onSubmit={handleSearch}> {/*formulario ao digitar ativa funcao search() */}
           <input
             placeholder='Digite o simbolo da moeda:  BTC '
+            value={valorInput} 
+            onChange={(event)=> setValorInput(event.target.value)} // tudo que for digitado no input será adicionado na state valorInput
           />
           
           <button type='submit'>

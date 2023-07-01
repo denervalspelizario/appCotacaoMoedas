@@ -13,6 +13,14 @@ const router = createBrowserRouter([
         path: '/',
         element: <Home/>
       },
+      {
+        path: '/detail/:cripto',  // estou indicando atravez com o simbolo : que é uma rota dinamica
+        element:<Detail/>
+      },
+      {
+        path: '*',          // rota de erro ou inexistente
+        element:<NotFound />
+      }
     ]
   }
 ])
