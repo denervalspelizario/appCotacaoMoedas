@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import styles from './detail.module.css';
-import  {useParams} from 'react-router-dom' // O useParams para acessar o nome da rota usada la no input da home(olhar routes)
+import  {useParams, useNavigate} from 'react-router-dom' // O useParams para acessar o nome da rota usada la no input da home(olhar routes)
 
 interface EstruturaMoedaProps {  // interface que vai tipar a state coins demonstrando como eu quero que venha os dados da api
   name: string;
@@ -26,6 +26,7 @@ export default function Detail(){
   const { cripto  } = useParams(); // pq cripto? pq foi esse o nome da rota dinamica usada(olhar em routes)
   const [detail, setDetail] = useState<EstruturaMoedaProps>() // state esta tipada com a interface EstruturaMoedaprops que recebera dados da api
   const [ loading, setLoading] = useState(true);  // state para loading
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -33,6 +34,10 @@ export default function Detail(){
        fetch(`https://sujeitoprogramador.com/api-cripto/coin/?key=f4020889af14ea44&pref=BRL&symbol=${cripto}`)  // pegando a url da api 
        .then(response => response.json()) //deu certo jogo esses dados em response e depois esses dados em json
        .then((data: EstruturaMoedaProps) => {
+
+        if(data.error){  // se caso usuario digitar na url uma moeda quenão existe ou der algum erro 
+          navigate('/') // com o navigate ele retorna automaticamente para home
+        }
           
         //formatando dados da api
         //Essa variavel abaixo recebe um objeto Intl.NumberFormat que formata números como moeda no estilo da localidade brasileira ("pt-BR") e usando a moeda brasileira ("BRL").
@@ -73,6 +78,33 @@ export default function Detail(){
     <div className={styles.container}>
       <h1 className={styles.center}>{detail?.name} </h1>
       <p className={styles.center}>{detail?.symbol}</p>
+
+      <section className={styles.content}>
+        <p>
+          <strong>Preço: </strong> {detail?.formatedPrice}
+        </p>
+
+        <p>
+          <strong>Maior preço 24h: </strong> {detail?.formatedHighprice}
+        </p>
+
+        <p>
+          <strong>Menor preço 24h: </strong> {detail?.formatedLowprice}
+        </p>
+
+        <p>
+          <strong>Delta 24h: </strong> 
+          
+            {/* se numero de delta_24(valorizacao em 24) for maior ou igual a 0 então o styles é o Profit se for menor então o style será Loss */} 
+          <span className={Number(detail?.delta_24) >= 0 ? styles.profit : styles.loss}> 
+            {detail?.delta_24h}
+          </span>
+        </p>
+
+        <p>
+          <strong>Valor de mercado: </strong> {detail?.formatedMarket}
+        </p>
+      </section>
     </div>
   )
 }
