@@ -113,7 +113,7 @@ export default function Home(){
               <th scope='col'>Moeda</th>
               <th scope='col'>Valor Mercado</th>
               <th scope='col'>Preço</th>
-              <th scope='col'>Volume</th>
+              
             </tr>
           </thead>
 
@@ -139,10 +139,7 @@ export default function Home(){
                 <td className={styles.tdLabel} data-label='Preco'> 
                   {moeda.formatedPrice}
                 </td>
-                              {/* se numero de delta_24(valorizacao em 24) for maior ou igual a 0 então o styles é o tdProfit se for menor então o style será tdLoss */} 
-                <td className={Number(moeda?.delta_24) >= 0 ? styles.tdProfit : styles.tdLoss} data-label='Volume'> 
-                  <span>{moeda.delta_24}</span>
-                </td>
+                
               </tr>
             ))}
           </tbody>

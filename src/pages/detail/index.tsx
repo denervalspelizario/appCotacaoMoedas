@@ -13,10 +13,10 @@ interface EstruturaMoedaProps {  // interface que vai tipar a state coins demons
   high_24: string;
   total_volume_24h: string;
   delta_24h: string;
+  numberDelta: number;
   formatedPrice: string;  // esta propriedade foi criado pela formatacao  não vem da api(atenção)
   formatedMarket: string; // esta propriedade foi criado pela formatacao  não vem da api(atenção) 
   formatedLowprice: string; // esta propriedade foi criado pela formatacao  não vem da api(atenção)
-  formatedHighprice: string; // esta propriedade foi criado pela formatacao  não vem da api(atenção)
   error?: string;  // propriedade opcional por isso o ?
 }
 
@@ -52,11 +52,13 @@ export default function Detail(){
           formatedPrice: price.format(Number(data.price)),        //formatando o dado price  
           formatedMarket: price.format(Number(data.market_cap)),  //formatando o dado valor de mercado  
           formatedLowprice: price.format(Number(data.low_24h)),   //formatando o dado menor preco 24h
-          formatedHighprice: price.format(Number(data.high_24)),  //formatando o dado maior preco 24h
+          
+          numberDelta: parseFloat(data.delta_24h.replace(",", "."))
         }
 
         setDetail(resultData) // passando os dados ja formatados para a state detail
         setLoading(false)  // como os dados ja chegaram então altero a state loading para false para renderizar os dados
+        console.log(data.high_24)
 
        })
     }
@@ -85,10 +87,6 @@ export default function Detail(){
         </p>
 
         <p>
-          <strong>Maior preço 24h: </strong> {detail?.formatedHighprice}
-        </p>
-
-        <p>
           <strong>Menor preço 24h: </strong> {detail?.formatedLowprice}
         </p>
 
@@ -96,7 +94,7 @@ export default function Detail(){
           <strong>Delta 24h: </strong> 
           
             {/* se numero de delta_24(valorizacao em 24) for maior ou igual a 0 então o styles é o Profit se for menor então o style será Loss */} 
-          <span className={Number(detail?.delta_24) >= 0 ? styles.profit : styles.loss}> 
+          <span className={detail?.numberDelta && detail?.numberDelta >= 0 ? styles.profit : styles.loss}> 
             {detail?.delta_24h}
           </span>
         </p>
@@ -104,6 +102,7 @@ export default function Detail(){
         <p>
           <strong>Valor de mercado: </strong> {detail?.formatedMarket}
         </p>
+      
       </section>
     </div>
   )
