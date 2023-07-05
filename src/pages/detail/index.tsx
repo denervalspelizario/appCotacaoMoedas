@@ -36,7 +36,7 @@ export default function Detail(){
        .then((data: EstruturaMoedaProps) => {
 
         if(data.error){  // se caso usuario digitar na url uma moeda quenão existe ou der algum erro 
-          navigate('/') // com o navigate ele retorna automaticamente para home
+          navigate('/home') // com o navigate ele retorna automaticamente para home
         }
           
         //formatando dados da api
@@ -58,7 +58,7 @@ export default function Detail(){
 
         setDetail(resultData) // passando os dados ja formatados para a state detail
         setLoading(false)  // como os dados ja chegaram então altero a state loading para false para renderizar os dados
-        console.log(data.high_24)
+        
 
        })
     }
@@ -66,6 +66,19 @@ export default function Detail(){
     getData() // chamando o getdata senão não funciona
 
   },[cripto]) // toda vez que sofrer alguma alteração cripto esse useEffect será chamado
+
+  // funcao que calcula tempo de carregamento se for muito alto então retorna a pagina de erro
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (loading) {  // se o loading estiver true ou seja carregando por mais de 6 segundos
+        navigate('*'); // navega para pagina de erro
+      }
+    }, 6000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [loading, navigate]);
 
 
   if(loading){  // se çloading estiver true ou seja não carregou os dados ainda então

@@ -8,7 +8,7 @@ export default function NotFound(){
 
       <Link to='/'>
 
-        Acessar cripto moedas
+        Voltar a home Global Cripto
       </Link>
     </div>
   )

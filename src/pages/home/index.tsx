@@ -35,7 +35,7 @@ export default function Home(){
   const navigate = useNavigate();
 
 
-  // FUNCAO ASSINCRONA QUE FAZ A REQUISIÇÃO DA API 
+  // FUNCAO ASSINCRONA QUE FAZ A REQUISIÇÃO DA API E RETORNA OS DADOS JA TRATADO E JOGA NA STATE MOEDAS
   useEffect(() => {
 
     async function getData(){
@@ -64,7 +64,8 @@ export default function Home(){
         })
 
         setMoedas(formatResult)  // passando os dados da api ja formatada(formatResult) para state Moedas que vamos usar para renderizar os dados
-        console.log(formatResult)
+        
+        
 
       })
       .catch((error) => { // requisição deu errado então
